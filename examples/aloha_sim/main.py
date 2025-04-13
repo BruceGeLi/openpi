@@ -19,11 +19,13 @@ class Args:
     seed: int = 0
 
     action_horizon: int = 10
-
+    num_episodes: int = 10
     host: str = "0.0.0.0"
     port: int = 8000
 
     display: bool = False
+
+    config_name: str = "pi0_fast_aloha_sim_low_mem_finetune"
 
 
 def main(args: Args) -> None:
@@ -45,6 +47,7 @@ def main(args: Args) -> None:
             _saver.VideoSaver(args.out_dir),
         ],
         max_hz=50,
+        num_episodes=args.num_episodes,
     )
 
     runtime.run()
