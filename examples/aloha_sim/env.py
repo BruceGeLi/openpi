@@ -44,27 +44,28 @@ class AlohaSimEnvironment(_environment.Environment):
         self._done = terminated or truncated
         self._episode_reward = max(self._episode_reward, reward)
 
-    # def _convert_observation(self, gym_obs: dict) -> dict:
-    #     img = gym_obs["pixels"]["top"]
-    #     img = image_tools.convert_to_uint8(image_tools.resize_with_pad(img, 224, 224))
-    #     # Convert axis order from [H, W, C] --> [C, H, W]
-    #     img = np.transpose(img, (2, 0, 1))
-    #
-    #     return {
-    #         "state": gym_obs["agent_pos"],
-    #         "images": {"cam_high": img},
-    #     }
-
     def _convert_observation(self, gym_obs: dict) -> dict:
-        # Convert the image to match the dataset format
         img = gym_obs["pixels"]["top"]
-        img = image_tools.convert_to_uint8(image_tools.resize_with_pad(img, 640, 480))  # Match dataset image size
+        # img = image_tools.convert_to_uint8(image_tools.resize_with_pad(img, 224, 224))
+        img = image_tools.convert_to_uint8(image_tools.resize_with_pad(img, 224, 224))
         # Convert axis order from [H, W, C] --> [C, H, W]
         img = np.transpose(img, (2, 0, 1))
 
         return {
-            "observation": {
-                "state": gym_obs["agent_pos"],
-                "images": {"top": img},
-            }
+            "state": gym_obs["agent_pos"],
+            "images": {"cam_high": img},
         }
+
+    # def _convert_observation(self, gym_obs: dict) -> dict:
+    #     # Convert the image to match the dataset format
+    #     img = gym_obs["pixels"]["top"]
+    #     img = image_tools.convert_to_uint8(image_tools.resize_with_pad(img, 640, 480))  # Match dataset image size
+    #     # Convert axis order from [H, W, C] --> [C, H, W]
+    #     img = np.transpose(img, (2, 0, 1))
+    #
+    #     return {
+    #         "observation": {
+    #             "state": gym_obs["agent_pos"],
+    #             "images": {"top": img},
+    #         }
+    #     }
