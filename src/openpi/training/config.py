@@ -630,7 +630,7 @@ _CONFIGS = [
     TrainConfig(
         name="pi0_fast_aloha_sim_low_mem_finetune",
         model=pi0_fast.Pi0FASTConfig(
-            action_dim=14, action_horizon=50, max_token_len=250, paligemma_variant="gemma_2b_lora"
+            action_dim=14, action_horizon=20, max_token_len=250, paligemma_variant="gemma_2b_lora"
         ),
         data=LeRobotAlohaDataConfig(
             repo_id="lerobot/aloha_sim_transfer_cube_human_image",
@@ -642,7 +642,7 @@ _CONFIGS = [
         # Again, make sure to match the model config above when extracting the freeze filter
         # that specifies which parameters should be frozen during LoRA finetuning.
         freeze_filter=pi0_fast.Pi0FASTConfig(
-            action_dim=14, action_horizon=50, max_token_len=250, paligemma_variant="gemma_2b_lora"
+            action_dim=14, action_horizon=20, max_token_len=250, paligemma_variant="gemma_2b_lora"
         ).get_freeze_filter(),
         # Turn off EMA for LoRA finetuning.
         ema_decay=None,
