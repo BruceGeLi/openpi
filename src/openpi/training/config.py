@@ -630,6 +630,27 @@ _CONFIGS = [
     TrainConfig(
         name="pi0_fast_aloha_sim_low_mem_finetune",
         model=pi0_fast.Pi0FASTConfig(
+            action_dim=14, action_horizon=50, max_token_len=250, paligemma_variant="gemma_2b_lora"
+        ),
+        data=LeRobotAlohaDataConfig(
+            repo_id="lerobot/aloha_sim_transfer_cube_human_image",
+            default_prompt="Transfer cube",
+            use_delta_joint_actions=False,
+        ),
+        weight_loader=weight_loaders.CheckpointWeightLoader("s3://openpi-assets/checkpoints/pi0_fast_base/params"),
+        num_train_steps=20_000,
+        # Again, make sure to match the model config above when extracting the freeze filter
+        # that specifies which parameters should be frozen during LoRA finetuning.
+        freeze_filter=pi0_fast.Pi0FASTConfig(
+            action_dim=14, action_horizon=50, max_token_len=250, paligemma_variant="gemma_2b_lora"
+        ).get_freeze_filter(),
+        # Turn off EMA for LoRA finetuning.
+        ema_decay=None,
+    ),
+    # Aloha Sim action 20
+    TrainConfig(
+        name="pi0_fast_aloha_sim20_low_mem_finetune",
+        model=pi0_fast.Pi0FASTConfig(
             action_dim=14, action_horizon=20, max_token_len=250, paligemma_variant="gemma_2b_lora"
         ),
         data=LeRobotAlohaDataConfig(
@@ -643,6 +664,27 @@ _CONFIGS = [
         # that specifies which parameters should be frozen during LoRA finetuning.
         freeze_filter=pi0_fast.Pi0FASTConfig(
             action_dim=14, action_horizon=20, max_token_len=250, paligemma_variant="gemma_2b_lora"
+        ).get_freeze_filter(),
+        # Turn off EMA for LoRA finetuning.
+        ema_decay=None,
+    ),
+
+TrainConfig(
+        name="pi0_fast_aloha_sim10_low_mem_finetune",
+        model=pi0_fast.Pi0FASTConfig(
+            action_dim=14, action_horizon=10, max_token_len=250, paligemma_variant="gemma_2b_lora"
+        ),
+        data=LeRobotAlohaDataConfig(
+            repo_id="lerobot/aloha_sim_transfer_cube_human_image",
+            default_prompt="Transfer cube",
+            use_delta_joint_actions=False,
+        ),
+        weight_loader=weight_loaders.CheckpointWeightLoader("s3://openpi-assets/checkpoints/pi0_fast_base/params"),
+        num_train_steps=20_000,
+        # Again, make sure to match the model config above when extracting the freeze filter
+        # that specifies which parameters should be frozen during LoRA finetuning.
+        freeze_filter=pi0_fast.Pi0FASTConfig(
+            action_dim=14, action_horizon=10, max_token_len=250, paligemma_variant="gemma_2b_lora"
         ).get_freeze_filter(),
         # Turn off EMA for LoRA finetuning.
         ema_decay=None,
